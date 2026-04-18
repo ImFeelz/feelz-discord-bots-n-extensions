@@ -77,7 +77,7 @@ test.prop([fc.integer({ min: 1, max: 1_000_000 }).map((n) => String(-n))])(
 );
 
 test.prop([
-  fc.float({ min: 0.1, max: 999.9, noNaN: true, noDefaultInfinity: true })
+  fc.float({ min: Math.fround(0.1), max: Math.fround(999.9), noNaN: true, noDefaultInfinity: true })
     .map((n) => n.toFixed(1)),
 ])(
   'validateTimeout rejects decimal strings',
