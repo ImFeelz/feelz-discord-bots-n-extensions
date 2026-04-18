@@ -110,7 +110,7 @@ This runs the full Jest test suite once (no watch mode). Tests use mocked Discor
 To run with coverage:
 
 ```bash
-npx jest --coverage
+npm run test:coverage
 ```
 
 ---
