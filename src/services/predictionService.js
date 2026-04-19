@@ -22,6 +22,9 @@ import * as scheduler from './scheduler.js';
 /** @type {Map<string, Prediction>} */
 const predictions = new Map();
 
+/** @type {ReturnType<typeof setInterval> | null} */
+let _sweepHandle = null;
+
 /** @type {import('discord.js').Client | null} */
 let client = null;
 
@@ -147,6 +150,7 @@ export async function cancelPrediction(predictionId, cancellationReason) {
   scheduler.cancel(predictionId);
 
   await updateGui(prediction);
+  predictions.delete(predictionId);
 }
 
 /**
@@ -173,6 +177,7 @@ export async function finalizePrediction(predictionId, correctAnswerIndex) {
 
   const channel = await client.channels.fetch(prediction.channelId);
   await channel.send(buildLoserMessage(prediction, loserIds));
+  predictions.delete(predictionId);
 }
 
 /**
@@ -195,4 +200,47 @@ async function updateGui(prediction) {
   }
 }
 
-export { predictions };
+/**
+ * Internal sweep: removes predictions older than ageThresholdMs from the Map.
+ * @param {number} ageThresholdMs
+ */
+function _runSweep(ageThresholdMs) {
+  const now = Date.now();
+  const removed = [];
+
+  for (const [id, prediction] of predictions) {
+    if (now - prediction.createdAt > ageThresholdMs) {
+      scheduler.cancel(id);
+      predictions.delete(id);
+      removed.push(id);
+    }
+  }
+
+  if (removed.length > 0) {
+    console.log(
+      `[cleanup] Removed ${removed.length} stale prediction(s) at ${new Date(now).toISOString()}`
+    );
+  }
+}
+
+/**
+ * Starts a repeating cleanup sweep that removes stale predictions.
+ * @param {number} [intervalMs=3_600_000]
+ * @param {number} [ageThresholdMs=86_400_000]
+ */
+export function startCleanupSweep(intervalMs = 3_600_000, ageThresholdMs = 86_400_000) {
+  stopCleanupSweep();
+  _sweepHandle = setInterval(() => _runSweep(ageThresholdMs), intervalMs);
+}
+
+/**
+ * Stops the repeating cleanup sweep if one is running.
+ */
+export function stopCleanupSweep() {
+  if (_sweepHandle !== null) {
+    clearInterval(_sweepHandle);
+    _sweepHandle = null;
+  }
+}
+
+export { predictions, _runSweep };
