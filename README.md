@@ -67,7 +67,7 @@ GUILD_ID=your_guild_id_here
 Before the bot can respond to `/predict`, you need to register the command with Discord once:
 
 ```bash
-node src/deploy-commands.js
+node --env-file=.env src/deploy-commands.js
 ```
 
 You only need to re-run this if you change the command definition.
@@ -90,7 +90,7 @@ You should see `Logged in as <BotName>#0000!` in the console. The bot is now liv
 2. Fill in the modal form:
    - **Prediction Description** — what you're predicting (e.g. "Steven gets 5 kills")
    - **Answer 1 & 2** — required answer options
-   - **Answer 3–5** — optional additional answers
+   - **Answer 3** — optional additional answer
    - **Lock Timeout (minutes)** — how long until voting auto-locks (e.g. `3`)
 3. The bot posts an interactive embed with voting buttons.
 4. Anyone in the channel can click a button to vote. They can change their vote any time before it locks.
