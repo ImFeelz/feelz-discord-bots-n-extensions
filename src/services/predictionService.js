@@ -10,7 +10,7 @@ import * as scheduler from './scheduler.js';
  * @property {string} messageId - ID of the posted GUI message
  * @property {string} creatorId - Discord user ID of the creator
  * @property {string} description - Prediction description (1–200 chars)
- * @property {string[]} answers - Ordered list of 2–5 answer strings
+ * @property {string[]} answers - Ordered list of 2–3 answer strings
  * @property {'ACTIVE' | 'LOCKED' | 'FINALIZED' | 'CANCELLED'} status
  * @property {number | null} correctAnswerIndex - Set on finalization
  * @property {string | null} cancellationReason - Set on cancellation

@@ -16,8 +16,6 @@ export async function handlePredictModal(interaction) {
   const answer1 = interaction.fields.getTextInputValue('answer1');
   const answer2 = interaction.fields.getTextInputValue('answer2');
   const answer3 = interaction.fields.getTextInputValue('answer3');
-  const answer4 = interaction.fields.getTextInputValue('answer4');
-  const answer5 = interaction.fields.getTextInputValue('answer5');
   const lockTimeout = interaction.fields.getTextInputValue('lockTimeout');
 
   // Validate description
@@ -39,8 +37,6 @@ export async function handlePredictModal(interaction) {
     ['Answer 1', answer1],
     ['Answer 2', answer2],
     ['Answer 3', answer3],
-    ['Answer 4', answer4],
-    ['Answer 5', answer5],
   ]) {
     if (value && value.trim().length > 0) {
       const result = validateAnswer(value);
@@ -57,7 +53,7 @@ export async function handlePredictModal(interaction) {
   }
 
   // Collect non-empty answers
-  const answers = collectAnswers([answer1, answer2, answer3, answer4, answer5]);
+  const answers = collectAnswers([answer1, answer2, answer3]);
   if (answers.length < 2) {
     return interaction.reply({
       content: 'At least 2 answers are required.',

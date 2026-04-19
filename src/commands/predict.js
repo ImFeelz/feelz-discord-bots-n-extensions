@@ -43,20 +43,6 @@ export async function execute(interaction) {
     .setRequired(false)
     .setMaxLength(50);
 
-  const answer4Input = new TextInputBuilder()
-    .setCustomId('answer4')
-    .setLabel('Answer 4 (optional)')
-    .setStyle(TextInputStyle.Short)
-    .setRequired(false)
-    .setMaxLength(50);
-
-  const answer5Input = new TextInputBuilder()
-    .setCustomId('answer5')
-    .setLabel('Answer 5 (optional)')
-    .setStyle(TextInputStyle.Short)
-    .setRequired(false)
-    .setMaxLength(50);
-
   const lockTimeoutInput = new TextInputBuilder()
     .setCustomId('lockTimeout')
     .setLabel('Lock Timeout (minutes)')
@@ -70,8 +56,6 @@ export async function execute(interaction) {
     new ActionRowBuilder().addComponents(answer1Input),
     new ActionRowBuilder().addComponents(answer2Input),
     new ActionRowBuilder().addComponents(answer3Input),
-    new ActionRowBuilder().addComponents(answer4Input),
-    new ActionRowBuilder().addComponents(answer5Input),
     new ActionRowBuilder().addComponents(lockTimeoutInput),
   );
 
